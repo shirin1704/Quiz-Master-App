@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">Add a New Quiz</h2>
+    
+    {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+            <div class="alert alert-{{ messages[0][0] }}">{{ messages[0][1] }}</div>
+        {% endif %}
+    {% endwith %}
+    
+    <form method="POST" action="{{ url_for('add_quiz', chapter_id=chapter_id) }}">
+        <div class="mb-3">
+            <label for="name" class="form-label">Quiz Name</label>
+            <input type="text" class="form-control" id="name" name="name" autocomplete="off" required>
+        </div>        
+        <div class="mb-3">
+            <label for="date_of_quiz" class="form-label">Quiz Date</label>
+            <input type="date" class="form-control" id="date_of_quiz" name="date_of_quiz" autocomplete="off" required>
+        </div>
+        <div class="mb-3">
+            <label for="deadline" class="form-label">Quiz Deadline</label>
+            <input type="datetime-local" class="form-control" id="deadline" name="deadline" autocomplete="off" required>
+        </div>
+        <button type="submit" class="btn btn-success">Add Quiz</button>
+        <a href="{{ url_for('show_quizzes', chapter_id = chapter_id) }}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

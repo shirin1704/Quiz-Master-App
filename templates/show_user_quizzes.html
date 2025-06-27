@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center">Quizzes</h2>
+
+    <!-- Section 1: Quizzes Already Taken -->
+    <div class="mt-4">
+        <h4>📊 Quizzes You've Taken</h4>
+        {% if quiz_attempts %}
+        <div class="table-responsive">
+            <table class="table table-bordered text-center">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Subject</th>
+                        <th>Chapter</th>
+                        <th>Quiz Name</th>
+                        <th>Attempts</th>
+                        <th>Highest Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for attempt in quiz_attempts %}
+                    <tr>
+                        <td>{{ attempt.subject_name }}</td>
+                        <td>{{ attempt.chapter_name }}</td>
+                        <td>{{ attempt.quiz_name }}</td>
+                        <td>{{ attempt.attempts }}</td>
+                        <td>{{ attempt.highest_score|round(2) }}%</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="text-muted">You haven't taken any quizzes yet.</p>
+        {% endif %}
+    </div>
+
+    <!-- Section 2: Available Quizzes -->
+    <div class="mt-5">
+        <h4>📝 Available Quizzes</h4>
+        {% if available_quizzes %}
+    <div class="accordion" id="availableQuizzesAccordion">
+        {% for subject in subjects %}
+            {% set subject_quizzes = available_quizzes | selectattr("chapter.subject_id", "equalto", subject.id) | list %}
+            {% if subject_quizzes %}
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="heading{{ subject.id }}">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                        data-bs-target="#collapse{{ subject.id }}">
+                        {{ subject.name }}
+                    </button>
+                </h2>
+                <div id="collapse{{ subject.id }}" class="accordion-collapse collapse" 
+                    data-bs-parent="#availableQuizzesAccordion">
+                    <div class="accordion-body">
+                        {% set chapters = subject_quizzes | map(attribute="chapter") | unique | list %}
+                        {% for chapter in chapters %}
+                        <div class="accordion" id="chapterAccordion{{ subject.id }}">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingChapter{{ chapter.id }}">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                        data-bs-target="#collapseChapter{{ chapter.id }}">
+                                        {{ chapter.name }}
+                                    </button>
+                                </h2>
+                                <div id="collapseChapter{{ chapter.id }}" class="accordion-collapse collapse" 
+                                    data-bs-parent="#chapterAccordion{{ subject.id }}">
+                                    <div class="accordion-body">
+                                        {% for quiz in subject_quizzes %}
+                                            <p><strong>{{ quiz.name }}</strong> (Deadline: {{ quiz.deadline.strftime('%Y-%m-%d %H:%M') }})</p>
+                                            <a href="{{ url_for('take_quiz', quiz_id=quiz.id) }}" class="start-quiz-btn-2">Start Quiz</a>
+                                            <hr>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-muted">No quizzes are currently available.</p>
+    {% endif %}
+
+    <!-- Expired Quizzes Section -->
+    <h3 class="mt-5 text-danger">Expired Quizzes</h3>
+    {% if expired_quizzes %}
+    <div class="accordion" id="expiredQuizzesAccordion">
+        {% for subject in subjects %}
+            {% set subject_expired = expired_quizzes | selectattr("chapter.subject_id", "equalto", subject.id) | list %}
+            {% if subject_expired %}
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="expiredHeading{{ subject.id }}">
+                    <button class="accordion-button collapsed text-danger" type="button" data-bs-toggle="collapse" 
+                        data-bs-target="#expiredCollapse{{ subject.id }}">
+                        {{ subject.name }} 
+                    </button>
+                </h2>
+                <div id="expiredCollapse{{ subject.id }}" class="accordion-collapse collapse" 
+                    data-bs-parent="#expiredQuizzesAccordion">
+                    <div class="accordion-body">
+                        {% set chapters = subject_expired | map(attribute="chapter") | unique | list %}
+                        {% for chapter in chapters %}
+                        <div class="accordion" id="chapterAccordion{{ subject.id }}">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingChapter{{ chapter.id }}">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" 
+                                        data-bs-target="#collapseChapter{{ chapter.id }}">
+                                        {{ chapter.name }}
+                                    </button>
+                                </h2>
+                                <div id="collapseChapter{{ chapter.id }}" class="accordion-collapse collapse" 
+                                    data-bs-parent="#chapterAccordion{{ subject.id }}">
+                                    <div class="accordion-body">
+                                        {% for quiz in subject_expired %}
+                                            <p><strong>{{ quiz.name }}</strong> (Deadline: {{ quiz.deadline.strftime('%Y-%m-%d %H:%M') }})</p>
+                                            <span class="badge bg-danger">Expired</span>
+                                            <hr>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-muted">No expired quizzes.</p>
+    {% endif %}
+</div>
+{% endblock %}

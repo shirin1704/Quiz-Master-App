@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Your Profile</h2>
+
+    <div class="card mx-auto shadow-sm" style="max-width: 500px;">
+        <div class="card-body">
+            <h5 class="card-title text-center">User Details</h5>
+            <hr>
+            <p><strong>Name:</strong> {{ current_user.full_name }}</p>
+            <p><strong>Email:</strong> {{ current_user.username }}</p>
+            <p><strong>Date of Birth:</strong> {{ current_user.dob }}</p>
+        </div>
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">⬅ Back to Dashboard</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">Add Question to Quiz</h2>
+    
+    <form method="POST" action="{{ url_for('add_question', quiz_id=quiz.id) }}">
+        <div class="mb-3">
+            <label for="question_statement" class="form-label">Question</label>
+            <input type="text" class="form-control" id="question_statement" name="question_statement" autocomplete="off" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Options</label>
+            <input type="text" class="form-control mb-2" name="option1" placeholder="Option 1" autocomplete="off" required>
+            <input type="text" class="form-control mb-2" name="option2" placeholder="Option 2" autocomplete="off" required>
+            <input type="text" class="form-control mb-2" name="option3" placeholder="Option 3" autocomplete="off" required>
+            <input type="text" class="form-control mb-2" name="option4" placeholder="Option 4" autocomplete="off" required>
+        </div>
+        <div class="mb-3">
+            <label for="correct_option" class="form-label">Correct Answer</label>
+            <select class="form-select" id="correct_option" name="correct_option" required>
+                <option value="option1">Option 1</option>
+                <option value="option2">Option 2</option>
+                <option value="option3">Option 3</option>
+                <option value="option4">Option 4</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-success">Add Question</button>
+        <a href="{{ url_for('show_quizzes', chapter_id = quiz.chapter_id) }}" class="btn btn-secondary">Go Back</a>
+    </form>
+</div>
+
+<!-- Bootstrap Modal for Confirmation -->
+<div class="modal fade" id="questionAddedModal" tabindex="-1" aria-labelledby="questionAddedLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="questionAddedLabel">Question Added!</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                The question has been successfully added. What would you like to do next?
+            </div>
+            <div class="modal-footer">
+                <a href="{{ url_for('add_question', quiz_id=quiz.id) }}" class="start-quiz-btn">➕ Add Another Question</a>
+                <a href="{{ url_for('show_quizzes', chapter_id=quiz.chapter_id) }}" class="btn btn-secondary">Finish</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript to Show Modal Automatically -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        let flashMessages = {{ get_flashed_messages(with_categories=true) | tojson }};
+        if (flashMessages.length > 0 && flashMessages.some(msg => msg[0] === 'success')) {
+            let modal = new bootstrap.Modal(document.getElementById('questionAddedModal'));
+            modal.show();
+        }
+    });
+</script>
+{% endblock %}

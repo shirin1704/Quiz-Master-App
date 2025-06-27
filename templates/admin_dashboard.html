@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <!-- Sidebar Navigation -->
+        <div class="col-md-3 sidebar">
+            <div class="list-group">
+                <a href="{{ url_for('dashboard') }}" class="list-group-item list-group-item-action active">Dashboard</a><br>
+                <a href="{{ url_for('profile') }}" class="list-group-item list-group-item-action active">Profile</a><br>
+                <a href="{{ url_for('admin_quizzes') }}" class="list-group-item list-group-item-action active">Quizzes</a>
+            </div>
+        </div>
+        <main class="main-content">
+        <div class = "container mt-4">
+            <h2 class="text-center">Admin Dashboard</h2>
+            <br>
+            <!-- Stats Section -->
+            <div class="stats-container">
+                <div class="stat-box">
+                    <h4>Total Subjects</h4>
+                    <p>{{ total_subjects }}</p>
+                </div>
+                <div class="stat-box">
+                    <h4>Total Quizzes</h4>
+                    <p>{{ total_quizzes }}</p>
+                </div>
+                <div class="stat-box">
+                    <h4>Total Users</h4>
+                    <p>{{ total_users }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Subjects Management -->
+        <div class="container mt-4">
+            <br>
+            <h3 class="text-center">Manage Subjects</h3>
+            <div class="table-responsive" style="max-width: 80%; margin: auto;">
+                <table class="table table-hover table-bordered text-center">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Subject Name</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for subject in subjects %}
+                        <tr>
+                            <td class="align-middle">{{ subject.name }}</td>
+                            <td class="d-flex justify-content-center align-items-center gap-2">
+                                <a href="{{ url_for('show_chapters', subject_id=subject.id) }}" class="view-chapters-btn">
+                                    📖 View Chapters
+                                </a>
+                                <form action="{{ url_for('delete_subject', subject_id=subject.id) }}" method="POST" class="d-inline">
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">
+                                        🗑️
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="2" class="text-center text-muted">No subjects available.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="d-flex justify-content-end" style="margin-right: 10%; margin-top: -10px;">
+                <button class="start-quiz-btn" onclick="window.location.href='{{ url_for('add_subject') }}'">
+                    ➕ Add Subject
+                </button>
+            </div>
+
+        <!-- Quiz Performance Distribution -->
+        <div class="container mt-4">
+            <h4 class="text-center">Quiz Performance Distribution</h4>
+            <div style = "width: 80%; margin: 0 auto;">
+                <canvas id="quizPerformanceChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Include Chart.js -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                let ctx = document.getElementById('quizPerformanceChart').getContext('2d');
+
+                // Data passed from Flask
+                let scoreData = {{ score_distribution | tojson }};
+                
+                let labels = Object.keys(scoreData);
+                let values = Object.values(scoreData);
+
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: '',
+                            data: values,
+                            backgroundColor: 'rgba(254, 233, 130, 0.6)',
+                            borderColor: 'rgba(232, 213, 116, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                title: {
+                                    display: true,
+                                    text: 'Number of Quiz Attempts'
+                                }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Score Ranges (%)'
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+        </script>
+        </main>
+    </div>
+</div>
+{% endblock %}

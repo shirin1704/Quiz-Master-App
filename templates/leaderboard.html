@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">Leaderboard</h2>
+    <canvas id="leaderboardChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    fetch("{{ url_for('leaderboard') }}")
+        .then(response => response.json())
+        .then(data => {
+            const usernames = data.map(entry => entry.user);
+            const scores = data.map(entry => entry.score);
+
+            new Chart(document.getElementById('leaderboardChart'), {
+                type: 'bar',
+                data: {
+                    labels: usernames,
+                    datasets: [{
+                        label: 'Scores',
+                        data: scores,
+                        backgroundColor: 'rgba(54, 162, 235, 0.6)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+</script>
+{% endblock %}

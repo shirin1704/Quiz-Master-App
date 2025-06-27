@@ -1,0 +1,240 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    padding-top: 50px;
+    overflow-x: hidden;
+}
+.container {
+    max-width: 800px;
+    margin: auto;
+}
+
+/* Navbar Styling */
+.navbar {
+    margin-bottom: 20px;
+}
+
+
+/* Button Styling */
+.btn {
+    border-radius: 5px;
+}
+h1 {
+    color: #333;
+}
+.btn-lg {
+    border-radius: 30px;
+}
+/* Welcome page buttons styles */
+.welcome-btn {
+    background-color: #cdcdcd; 
+    color: black;
+    padding: 10px 24px;
+    border: 1px solid black;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.welcome-btn:hover {
+    background-color: #23272b; /* Slightly darker on hover */
+    color: white;
+}
+
+/* Cards */
+.card {
+    border-radius: 10px;
+}
+.card h5 {
+    font-weight: bold;
+}
+
+/* Recommended Quizzes */
+.card-body .btn {
+    width: 100%;
+}
+/* Fixed Sidebar Navigation */
+.sidebar {
+    position: fixed;
+    top: 66px; /* Adjust based on your navbar height */
+    left: 0;
+    width: 180px !important; /* Sidebar width */
+    height: 100%; /* Full height */
+    padding-top: 20px;
+    box-shadow: 10px 0 10px rgba(0, 0, 0, 0.1); /* Optional shadow */
+    overflow-y: auto;
+    border-right: 1px solid #23272b
+}
+
+.sidebar .list-group {
+    border-radius: 0;
+    width: 150px;
+    padding: 8px 12px;
+    text-align: center;
+    font-size: 16px;
+}
+.sidebar .list-group-item.active {
+    background-color: #343a40;
+    color: white;
+}
+.content {
+    margin-top: 80px;
+    margin-left: 260px; /* Offset main content */
+    padding: 20px;
+}
+.stats-container {
+    display: flex;
+    justify-content: center; /* Centers the stats */
+    align-items: center;
+    gap: 20px; /* Adds spacing between boxes */
+    flex-wrap: wrap; /* Prevents overflow on smaller screens */
+    margin-bottom: 20px; /* Creates space below */
+}
+.stat-box {
+    width: 100%;  /* Ensures they fill the container */
+    max-width: 250px;  /* Set a fixed width for all */
+    height: 120px;  /* Fixed height for uniformity */
+    background-color: #f8f9fa;  /* Light background */
+    border-radius: 10px;  /* Rounded edges */
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    text-align: center;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #23272b;
+}
+
+.stat-box h4 {
+    font-size: 20px;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.stat-box p {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+    color: #dbbe2c;
+}
+.recommended-quizzes {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+
+.quiz-card {
+    width: 250px;
+    height: 180px;
+    background-color: #fff;
+    border-radius: 10px;
+    text-align: center;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid #23272b;
+}
+
+.quiz-card h5 {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.quiz-card p {
+    font-size: 14px;
+    color: #666;
+    margin: 3px 0;
+}
+.start-quiz-btn {
+    background-color: rgb(254, 233, 130); /* Dark gray */
+    color:#23272b; /* White text */
+    border: none; /* Remove default border */
+    padding: 5px 10px; /* Adjust size */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Show pointer on hover */
+    transition: background-color 0.3s ease-in-out;
+    border: 1px solid rgb(232, 213, 116);
+    margin-top: 20px;
+    text-decoration: none;
+}
+.start-quiz-btn:hover {
+    background-color:rgb(232, 208, 84) /* Darker shade on hover */
+}
+
+.graph-container {
+    width: 100%;
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.main-content {
+    margin-left: 90px; /* Adjust based on your sidebar width */
+    transition: margin 0.3s ease-in-out;
+    padding: 20px;
+}
+.accordion-button:focus {
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+.start-quiz-btn-2 {
+    background-color: rgb(254, 233, 130); /* Dark gray */
+    color:#23272b; /* White text */
+    padding: 5px 5px;
+    border: none; /* Remove default border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Show pointer on hover */
+    transition: background-color 0.3s ease-in-out;
+    border: 1px solid rgb(232, 213, 116);
+    font-size: 14px;
+    text-decoration: none;
+}
+.start-quiz-btn-2:hover {
+    background-color:rgb(232, 208, 84) /* Darker shade on hover */
+}
+.retake-quiz-btn {
+    background-color: rgb(254, 233, 130); /* Dark gray */
+    color:#23272b; /* White text */
+    padding: 5px 10px;
+    border: none; /* Remove default border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Show pointer on hover */
+    transition: background-color 0.3s ease-in-out;
+    border: 1px solid rgb(232, 213, 116);
+    font-size: 16px;
+    text-decoration: none;
+}
+.retake-quiz-btn:hover {
+    background-color:rgb(232, 208, 84) /* Darker shade on hover */
+}
+
+.view-chapters-btn {
+    background-color: rgb(254, 233, 130); /* Dark gray */
+    color:#23272b; /* White text */
+    padding: 5px 10px;
+    border: none; /* Remove default border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Show pointer on hover */
+    transition: background-color 0.3s ease-in-out;
+    border: 1px solid rgb(232, 213, 116);
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.view-chapters-btn:hover {
+    background-color:rgb(232, 208, 84)
+}
+

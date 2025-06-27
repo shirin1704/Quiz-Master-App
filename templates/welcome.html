@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container d-flex flex-column align-items-center justify-content-center vh-80">
+    <div class="text-center">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="QuizWhiz Logo" class="mb-3" style="width: 150px;">
+        <h1 class="fw-bold">Welcome to QuizWhiz</h1>
+        <p class="lead text-muted">
+        Your ultimate companion for mastering quizzes and acing exams! 🎓  <br> 
+        QuizWhiz is designed to help students test their knowledge, practice key concepts, and track progress effectively.
+        Whether you're preparing for a big test or just brushing up on your skills, we've got interactive quizzes to make learning fun and engaging!
+        </p>
+        
+        
+        <!-- {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+            <div class="alert alert-{{ messages[0][0] }} alert-dismissible fade show" role="alert">
+                {{ messages[0][1] }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endif %}
+        {% endwith %} -->
+        
+        <div class="mt-4">
+            <a href="{{ url_for('login') }}" class="welcome-btn">Login</a>
+            <a href="{{ url_for('register') }}" class="welcome-btn ms-3">Register</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

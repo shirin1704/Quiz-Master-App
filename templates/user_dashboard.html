@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <!-- Sidebar Navigation -->
+        <div class="col-md-3 sidebar">
+            <div class="list-group">
+                <a href="{{ url_for('dashboard') }}" class="list-group-item list-group-item-action active">Dashboard</a><br>
+                <a href="{{ url_for('profile') }}" class="list-group-item list-group-item-action active">Profile</a><br>
+                <a href="{{ url_for('quizzes') }}" class="list-group-item list-group-item-action active">Quizzes</a>
+            </div>
+        </div>
+        <main class="main-content">
+        <div class="container mt-4">
+            <h2 class="text-center">Welcome, {{ current_user.full_name }}!</h2>
+            <br>
+            <!-- Stats Section -->
+            <div class="stats-container">
+                <div class="stat-box">
+                    <h4>Total Quizzes Attempted</h4>
+                    <p>{{ total_attempts }}</p>
+                </div>
+                <div class="stat-box">
+                    <h4>Average Score</h4>
+                    <p>{{ average_score }}%</p>
+                </div>
+                <div class="stat-box">
+                    <h4>Perfect Scores</h4>
+                    <p>{{ perfect_scores }}</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Recommended Quizzes Section -->
+        <div class="container mt-4">
+            <h3 class="text-center">Available Quizzes</h3>
+            <div class="recommended-quizzes">
+                {% for quiz in recommended_quizzes %}
+                {% if quiz.deadline > datetime.utcnow() %}
+                <div class="quiz-card">
+                    <h5>{{ quiz.name }}</h5>
+                    <p><strong>Subject:</strong> {{ quiz.chapter.subject.name }}</p>
+                    <p><strong>Deadline:</strong> {{ quiz.deadline.strftime('%Y-%m-%d %H:%M') }}</p>
+                    <a href="{{ url_for('view_quiz', quiz_id=quiz.id) }}" class="start-quiz-btn-2" style = "margin-top: 4px;">View Quiz</a>
+                    <a href="{{ url_for('take_quiz', quiz_id=quiz.id) }}" class="start-quiz-btn-2" style = "margin-top: 2px;">Start Quiz</a>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Score Distribution Graph Section -->
+        <div class="container mt-4">
+            <h3 class="text-center">Score Distribution</h3>
+            <div class="graph-container">
+                <canvas id="scoreChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Script to Render Chart.js Graph -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                const ctx = document.getElementById("scoreChart").getContext("2d");
+
+                fetch("{{ url_for('get_score_distribution') }}")
+                    .then(response => response.json())
+                    .then(data => {
+                        new Chart(ctx, {
+                            type: "bar",
+                            data: {
+                                labels: data.scores,
+                                datasets: [{
+                                    label: "Number of Quizzes vs Average Score",
+                                    data: data.counts,
+                                    backgroundColor: "rgb(254, 233, 130)",
+                                    borderColor: "rgb(232, 213, 116)",
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                scales: {
+                                    y: { beginAtZero: true }
+                                }
+                            }
+                        });
+                    });
+            });
+        </script>
+    </main>
+</div>
+</div>
+{% endblock %}
