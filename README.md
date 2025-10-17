@@ -52,8 +52,6 @@ The app includes REST endpoints for:
 - Retrieving and posting quiz attempts  
 - Fetching score distribution (for admin dashboards)  
 
-An OpenAPI (YAML) file is included separately for documentation and testing purposes.
-
 ---
 
 ## 🏅 Future Enhancements
